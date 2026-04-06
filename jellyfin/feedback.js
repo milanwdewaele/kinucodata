@@ -4,8 +4,8 @@
 
   const QUESTION = {
     id: 'q1',
-    text: 'Mis je een film of serie?',
-    buttons: ['Ja! 🎬', 'Nee, alles ok ✅']
+    text: 'Vind je de startpagina overzichtelijk en duidelijk?',
+    buttons: ['Ja', 'Nee, het kan beter']
   };
   // ────────────────────────────────────────────────────────────────
 
