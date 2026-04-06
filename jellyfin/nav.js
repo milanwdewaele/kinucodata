@@ -1,8 +1,5 @@
+(function () {
 // Custom Navbar — Logo variant voor Jellyfin 10.11.x (Kinuco / ElegantFin)
-// Verschil met custom-navbar.js: hamburger-pil bevat ook een logo.
-//
-// SETUP: vervang de SVG tussen <!-- LOGO START --> en <!-- LOGO END -->
-// door jouw eigen SVG-code.
 
 const NAVBAR_FLAG = 'custom-navbar-applied';
 if (window[NAVBAR_FLAG]) {
@@ -11,7 +8,7 @@ if (window[NAVBAR_FLAG]) {
 }
 window[NAVBAR_FLAG] = true;
 
-// ─── !! VERVANG DIT MET JOUW SVG !! ──────────────────────────────────────────
+// ─── !! VERVANG DIT MET JOUW SVG !! ─────────────────────────────────────────────────────
 const LOGO_SVG = `
 <!-- LOGO START -->
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 969.01 154.71">
@@ -33,7 +30,7 @@ const LOGO_SVG = `
 </svg>
 <!-- LOGO END -->
 `;
-// ─────────────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────────
 
 function waitForElement(selector, timeout = 10000) {
     return new Promise(resolve => {
@@ -101,11 +98,9 @@ function buildNavbar() {
 
     console.log('[Navbar] Navbar nog niet gevonden, bouwen.');
 
-    // ── Desktop ──
     const wrap = document.createElement('div');
     wrap.id = 'custom-navbar-wrap';
 
-    // Links: hamburger + sep + logo in één pil
     const leftSection = document.createElement('div');
     leftSection.id = 'cn-left';
 
@@ -145,7 +140,6 @@ function buildNavbar() {
     hamburgerPill.appendChild(logoEl);
     leftSection.appendChild(hamburgerPill);
 
-    // Midden
     const centerSection = document.createElement('div');
     centerSection.id = 'cn-center';
     const clock = document.createElement('div');
@@ -162,15 +156,12 @@ function buildNavbar() {
         link.addEventListener('click', () => { window.location.hash = item.hash; });
         linksPill.appendChild(link);
         if (item.hash === '#/home') {
-            link.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
+            link.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
         }
     });
     centerSection.appendChild(clock);
     centerSection.appendChild(linksPill);
 
-    // Rechts
     const rightPill = document.createElement('div');
     rightPill.id = 'cn-right';
     rightPill.className = 'cn-pill';
@@ -193,7 +184,6 @@ function buildNavbar() {
     wrap.appendChild(centerSection);
     wrap.appendChild(rightPill);
 
-    // ── Mobiel ──
     const mobile = document.createElement('div');
     mobile.id = 'custom-navbar-mobile';
 
@@ -246,42 +236,25 @@ function buildNavbar() {
             const t = el.dataset.hash;
             el.classList.toggle('active', h === t || h.startsWith(t + '&') || h.startsWith(t + '?'));
         });
-
         const isHome = h === '#/home' || h === '#/' || h === '' || h.startsWith('#/home?');
         backBtn.classList.toggle('cn-back-visible', !isHome);
-
         const hideNavbar = window.location.hash.startsWith('#/video');
         setNavbarVisibility(hideNavbar);
     }
     syncActive();
     window.addEventListener('hashchange', syncActive);
-    setInterval(() => {
-        syncActive();
-    }, 1000);
+    setInterval(syncActive, 1000);
 }
 
 function setNavbarVisibility(hide) {
-
     [document.getElementById('custom-navbar-wrap'), document.getElementById('custom-navbar-mobile')].forEach(el => {
         if (!el) return;
-        if (hide) {
-            el.classList.remove('cn-visible');
-            el.classList.add('cn-hidden');
-        } else {
-            el.classList.remove('cn-hidden');
-            el.classList.add('cn-visible');
-        }
+        if (hide) { el.classList.remove('cn-visible'); el.classList.add('cn-hidden'); }
+        else { el.classList.remove('cn-hidden'); el.classList.add('cn-visible'); }
     });
-
-    // Toggle default Jellyfin header visibility
     document.querySelectorAll('.skinHeader').forEach(header => {
-        if (hide) {
-            // Override possible: .skinHeader { display: none !important; }
-            header.style.setProperty('display', 'block', 'important');
-        } else {
-            // Hide when custom navbar is visible
-            header.style.setProperty('display', 'none', 'important');
-        }
+        if (hide) header.style.setProperty('display', 'block', 'important');
+        else header.style.setProperty('display', 'none', 'important');
     });
 }
 
@@ -295,3 +268,4 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
+})();

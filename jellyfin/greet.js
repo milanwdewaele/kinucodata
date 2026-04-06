@@ -1,3 +1,4 @@
+(function () {
 // Custom Home Hero for Jellyfin
 // Werkt met de JavaScript Injector plugin.
 // Past alleen de web-UI aan, geen server-API nodig.
@@ -97,11 +98,10 @@ function pickSubtitle() {
 
 function getTimeIcon() {
   const hour = new Date().getHours();
-
-  if (hour >= 5 && hour < 12) return '\u2615\uFE0F';   // ☕️ ochtend
-  if (hour >= 12 && hour < 18) return '\u2600\uFE0F';  // ☀️ middag
-  if (hour >= 18 && hour < 22) return '\u{1F319}';     //  avond
-  return '\u{1F311}';                                  //  nacht
+  if (hour >= 5 && hour < 12) return '\u2615\uFE0F';
+  if (hour >= 12 && hour < 18) return '\u2600\uFE0F';
+  if (hour >= 18 && hour < 22) return '\u{1F319}';
+  return '\u{1F311}';
 }
 
 function injectStyles() {
@@ -109,7 +109,6 @@ function injectStyles() {
     console.log('[HomeHero] Stijlen al aanwezig, overgeslagen.');
     return;
   }
-
   console.log('[HomeHero] Stijlen injecteren...');
   const style = document.createElement('style');
   style.id = 'custom-home-hero-style';
@@ -123,7 +122,6 @@ function injectStyles() {
       align-items: center;
       gap: 1.1rem;
     }
-
     .custom-home-hero-icon {
       flex-shrink: 0;
       width: 46px;
@@ -136,13 +134,11 @@ function injectStyles() {
       justify-content: center;
       font-size: 1.4rem;
     }
-
     .custom-home-hero-text {
       display: flex;
       flex-direction: column;
       gap: .2rem;
     }
-
     .custom-home-hero-title {
       font-size: 1.55rem;
       font-weight: 600;
@@ -150,19 +146,13 @@ function injectStyles() {
       letter-spacing: .01em;
       line-height: 1.2;
     }
-
     .custom-home-hero-subtitle {
       font-size: .88rem;
       color: rgba(255, 255, 255, 0.45);
     }
-
     @media (max-width: 900px) {
-      .custom-home-hero {
-        padding: 1rem 1.2rem;
-      }
-      .custom-home-hero-title {
-        font-size: 1.25rem;
-      }
+      .custom-home-hero { padding: 1rem 1.2rem; }
+      .custom-home-hero-title { font-size: 1.25rem; }
     }
   `;
   document.head.appendChild(style);
@@ -243,7 +233,6 @@ function maybeApply() {
   setTimeout(applyToHome, 600);
 }
 
-// DOMContentLoaded is bij injectie vaak al voorbij — direct aanroepen
 if (document.readyState === 'loading') {
   console.log('[HomeHero] DOM nog aan het laden, wachten op DOMContentLoaded.');
   document.addEventListener('DOMContentLoaded', () => {
@@ -259,3 +248,4 @@ window.addEventListener('hashchange', () => {
   console.log('[HomeHero] hashchange event ontvangen.');
   maybeApply();
 });
+})();
